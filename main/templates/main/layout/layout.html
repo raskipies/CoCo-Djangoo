@@ -21,17 +21,20 @@
 
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'forum/css/forum.css' %}">
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+    {% block styles %}{% endblock %} <!-- dodane 10.03-->
+
 </head>
 
 <body>
-    <div class="d-flex flex-nowrap">
+    <div class="main_container"> <!-- dodane 10.03-->
         {% include 'main/layout/sidebar.html' %}
-        <main class="py-5">
-            <div class="container-sm" style="min-width: 997px">
-                <!-- Blok zawierający zawartość, definiowaną przez wyświetlany widok-->
-                {% block content %}
-                {% endblock%}
-            </div>
+        <main class=" d-flex flex-column w-100">
+
+            <!-- Blok zawierający zawartość, definiowaną przez wyświetlany widok-->
+            {% block content %}
+            {% endblock%}
+
         </main>
     </div>
 
