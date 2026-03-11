@@ -25,7 +25,7 @@ def get_links():
         'href': '/news/',
         'icon': 'fa-newspaper',
     },{
-        'name': 'Add news',
+        'name': 'Request Game', #zmiana nazwy 11.03
         'href': '/news/create',
         'icon': 'fa-plus',
     },{

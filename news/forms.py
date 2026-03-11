@@ -8,8 +8,8 @@ class ArticlesForm(ModelForm):
 
         # Blok widgets zajmuje się definicją pól w HTML. Tutaj można definiować typy wyświetlanych pół oraz zarządzać ich atrybutami.
         widgets = {
-            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
-            'excerpt': TextInput(attrs={'class': 'form-control', 'placeholder': 'Excerpt'}),
-            'body': Textarea(attrs={'class': 'form-control', 'placeholder': 'Article body'}),
-            'published_at': DateTimeInput(attrs={'class': 'form-control', 'placeholder': 'Publication date'}),
+            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Game Title'}),
+            'excerpt': TextInput(attrs={'class': 'form-control', 'placeholder': 'Publisher Name'}),
+            'body': Textarea(attrs={'class': 'form-control', 'placeholder': 'Game Description'}),
+            'published_at': DateTimeInput(attrs={'class': 'form-control', 'placeholder': 'Date Of Request'}),
         }

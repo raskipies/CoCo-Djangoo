@@ -1,26 +1,33 @@
-{% extends 'main/layout/layout.html' %}
+{% extends 'main/layout/layout.html' %} <!-- zmiany 11.03-->
+{% load static %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/req_games.css' %}">
+{% endblock %}
 
-{% block title%}Add news{% endblock %}
+{% block title%}Request Game{% endblock %}
 
 {% block content%}
-    <h1>Add news</h1>
-    <div>
-        <form method="post" class="form d-flex flex-column gap-2">
-{#            CSRF to Cross-site request forgery - rodzaj ataku na strony internetowe #}
-{#            Token wymagany jest aby potwierdzić, że formularz na pewno został wypełniony na żądanie użytkownika #}
-{#            Szczegóły: https://pl.wikipedia.org/wiki/Cross-site_request_forgery #}
-            {% csrf_token %}
+<div class="container mt-4 form-page">
 
-            {{ form.title }}
-            {{ form.excerpt }}
-            {{ form.body }}
-            {{ form.published_at }}
+    <h1 class="mb-4">Request Game</h1>
 
-            <span>
-                {{ error }}
-            </span>
+    <form method="post" class="d-flex flex-column gap-3">
 
-            <button class="btn btn-success" type="submit">Add news</button>
-        </form>
-    </div>
+        {# CSRF to Cross-site request forgery - rodzaj ataku na strony internetowe #}
+        {# Token wymagany jest aby potwierdzić, że formularz na pewno został wypełniony na żądanie użytkownika #}
+        {# Szczegóły: https://pl.wikipedia.org/wiki/Cross-site_request_forgery #}
+        {% csrf_token %}
+
+        {{ form.title }}
+        {{ form.excerpt }}
+        {{ form.body }}
+        {{ form.published_at }}
+
+        <span>
+            {{ error }}
+        </span>
+
+        <button class="btn btn-success" type="submit">Submit Request</button>
+    </form>
+</div>
 {% endblock %}
