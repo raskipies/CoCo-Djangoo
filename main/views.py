@@ -89,3 +89,6 @@ def logout_user(request):
     logout(request)
      
     return redirect('home')
+
+def features_page(request):
+    return render(request, 'main/features.html') #features.html

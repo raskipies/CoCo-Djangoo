@@ -1,0 +1,64 @@
+{% extends 'main/layout/layout.html' %}
+{% load static %}
+
+{% block title %}Features{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'main/css/feature.css' %}">
+
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+
+  <div class="container custom-box shadow-lg p-4 text-center">
+
+    <div class="mb-1">
+      <img src="{% static 'main/img/2.jpg' %}" alt="Logo" class="images">
+    </div>
+
+    <h1 class="header">Features</h1>
+    <p class="subtitle">Explore the capabilities of our platform effectively.</p>
+
+    <div class="row g-4 justify-content-center">
+
+      <div class="col-md-5">
+        <div class="custom-card">
+          <i class="fas fa-gamepad icon-style"></i>
+          <h3>Home</h3>
+          <p>This is our main <strong>game catalog</strong>. Browse titles and click to purchase.</p>
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <div class="custom-card">
+          <i class="fas fa-plus-circle icon-style"></i>
+          <h3>Add Your Bug</h3>
+          <p>Found a glitch? Use our <strong>submission form</strong> to report any issues.</p>
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <div class="custom-card">
+          <i class="fas fa-bug icon-style"></i>
+          <h3>Bug Forum</h3>
+          <p>A hub where all submitted reports appear as <strong>public posts</strong>.</p>
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <div class="custom-card">
+          <i class="fas fa-envelope-open-text icon-style"></i>
+          <h3>Request Game</h3>
+          <p>Is your favorite game missing? Let us know which titles we should add!</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mt-5 mb-4">
+      <a href="/" class="button">
+        Back to Game Catalog
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

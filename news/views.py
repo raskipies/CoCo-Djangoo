@@ -3,8 +3,19 @@ from django.views.generic import DetailView, UpdateView, DeleteView
 
 from .models import Articles
 from .forms import ArticlesForm
-
+from .forms import RequestGameForm
 # Create your views here.
+
+def request_game(request):
+    if request.method == 'POST':
+        form = RequestGameForm()
+        if form.is_valid():
+            form.save()
+    else:
+        form = RequestGameForm()
+
+    return render(request, 'news/request_game.html', {'form': form})
+
 
 def news_home(request):
     news = Articles.objects.all().order_by('-published_at')

@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+.custom-box {
+  width: 900px;
+  height: 900px;
+  border: 2px solid #2c3e50;
+  border-radius: 20px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 40px;
+}
+
+.images {
+  max-height: 200px;
+  width: auto;
+  margin-bottom: 15px;
+}
+
+.header {
+  font-family: 'Pacifico', cursive !important;
+  font-weight: 400;
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.subtitle {
+  color: #6c757d;
+  margin-bottom: 50px;
+}
+
+.custom-card {
+  height: 100%;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.icon-style {
+  font-size: 1.8rem;
+  color: #28a745;
+  margin-bottom: 0.8rem;
+  display: block;
+}
+
+.custom-card h3 {
+  font-size: 1.15rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.custom-card p {
+  font-size: 0.85rem;
+  color: #495057;
+  line-height: 1.4;
+}
+
+
+.button {
+  padding: 10px 35px;
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  font-family: 'Pacifico', cursive;
+  font-size: 1.1rem;
+  border: none;
+  display: inline-block;
+}
+
+.button:hover {
+  background-color: #218838;
+  color: white;
+}

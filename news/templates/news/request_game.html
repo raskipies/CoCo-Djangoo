@@ -1,0 +1,44 @@
+{% extends 'main/layout/layout.html' %}
+{% load static %}
+
+{% block styles %}
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'main/css/req_games.css' %}">
+
+<style>
+  /* Dodaje to tutaj, bo plik CSS rzuca błędem 404 */
+  .header {
+    font-family: 'Pacifico', cursive !important;
+    text-align: center !important;
+  }
+
+  .centr {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="centr">
+  <div class="form-page">
+    <div class="text-center mb-3">
+      <img src="{% static 'main/img/2.jpg' %}" alt="Logo" class="images">
+    </div>
+
+    <h1 class="header mb-4">Request a Game</h1>
+
+    <form method=" post" class="d-flex flex-column gap-3">
+      {% csrf_token %}
+      {{ form.title }}
+      {{ form.excerpt }}
+      {{ form.body }}
+      <button class="btn btn-success" type="submit">Submit Request</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

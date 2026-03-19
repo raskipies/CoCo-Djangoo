@@ -8,7 +8,11 @@ def get_links():
         'name': 'Home',
         'href': '/',
         'icon': 'fa-house',
-    }, {
+    },{
+        'name': 'Features',
+        'href': '/features/',
+        'icon': 'fa-star',
+    },{
         'name': 'Cars',
         'href': '/cars',
         'icon': 'fa-car',
@@ -21,16 +25,20 @@ def get_links():
         'href': '/about',
         'icon': 'fa-address-card',
     },{
-        'name': 'News',
+        'name': 'Bug Forum',
         'href': '/news/',
         'icon': 'fa-newspaper',
     },{
-        'name': 'Request Game', #zmiana nazwy 11.03
+        'name': 'Add Your Bug!', #zmiana nazwy 11.03
         'href': '/news/create',
         'icon': 'fa-plus',
     },{
         'name': 'Forum',
         'href': '/forum',
         'icon': 'fa-comment', #look for your icon here https://fontawesome.com/search?ic=free
+    },{
+        'name': 'Request Game',
+        'href': '/request-game/',
+        'icon': 'fa-gamepad',
     }]
     
