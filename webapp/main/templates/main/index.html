@@ -1,0 +1,28 @@
+{% extends 'main/layout/layout.html' %}
+{% load static %} <!-- dodane 10.03-->
+
+{% block title%}Homepage{% endblock %}
+{% block styles %} <!-- dodane 10.03-->
+<link rel="stylesheet" href="{% static 'main/css/inde.css' %}"> <!-- dodane 10.03-->
+{% endblock %} <!-- dodane 10.03-->
+
+{% block content%}
+<section class="games-home">
+    <header class="games-home__header">
+        <h1 class="games-home__title">Polecane gry</h1>
+        <p class="games-home__subtitle">Biblioteka gier rozwijana przez zespół CoCo Django.</p>
+    </header>
+
+    {% if games %}
+    <div class="games-grid">
+        {% for game in games %}
+            {% include 'main/components/game_card.html' with game=game %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="games-empty-state">
+        Brak dostępnych gier
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
