@@ -1,6 +1,46 @@
-/*dodane 11.03*/
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+.centr {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.images {
+  display: flex;
+  height: 250px;
+  width: 250px;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+
+.my_header {
+  font-family: 'Pacifico', cursive !important;
+  text-align: center;
+  color: #2c3e50;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: red !important;
+}
+
+.form-control {
+  text-align: center;
+  font-family: 'Pacifico', cursive;
+}
+
+.btn-success {
+  display: flex;
+  border-radius: 60px;
+  background-color: green;
+  margin: auto;
+  color: white;
+  font-family: 'Pacifico'
+}
 
 .form-page {
-  max-width: 600px;
-  min-height: 100vh;
+  width: 100%;
+  max-width: 500px;
 }
