@@ -6,6 +6,9 @@ from news import views as news_views
 
 urlpatterns = [
     path('', views.index, name='home'),
+    path('store/', views.store_view, name='store'),
+    path('library/', views.library_view, name='library'),
+    path('purchase/<slug:game_slug>/', views.purchase_game, name='purchase_game'),
     path('features/', views.features_page, name='features'), #18.03 Pali- nowe
     path('about', views.about, name='about'),
     path('cars', views.cars, name='cars'),

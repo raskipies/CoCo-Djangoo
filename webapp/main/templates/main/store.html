@@ -1,0 +1,96 @@
+{% extends 'main/layout/layout.html' %}
+{% load static %}
+
+{% block title %}Store{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'main/css/store.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="store-page">
+    <header class="store-header">
+        <h1>GAME STORE</h1>
+        <p>Discover and purchase amazing games.</p>
+    </header>
+
+    {% if games %}
+    <div class="store-grid">
+        {% for item in games %}
+        <div class="game-card">
+            <div class="game-card__media">
+                {% if item.game.image %}
+                <img src="{{ item.game.image.url }}" alt="{{ item.game.title }}" class="game-card__image">
+                {% else %}
+                <div class="game-card__placeholder">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                {% endif %}
+            </div>
+            <div class="game-card__body">
+                <h3 class="game-card__title">{{ item.game.title }}</h3>
+                <p class="game-card__description">{{ item.game.short_description|truncatewords:15 }}</p>
+                <div class="game-card__footer">
+                    <div class="game-card__price">{{ item.game.price }} PLN</div>
+                    {% if item.is_owned %}
+                        <button class="game-card__button game-card__button--owned" disabled>
+                            <i class="fas fa-check"></i> Posiadasz
+                        </button>
+                    {% else %}
+                        <button class="game-card__button game-card__button--buy" onclick="purchaseGame('{{ item.game.slug }}', this)">
+                            <i class="fas fa-shopping-cart"></i> Kup
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-inbox"></i>
+        <h2>Brak dostępnych gier</h2>
+        <p>Powróć później, aby zobaczyć nowe gry!</p>
+    </div>
+    {% endif %}
+</section>
+
+<script>
+function purchaseGame(slug, button) {
+    button.disabled = true;
+    const originalText = button.innerHTML;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kupowanie...';
+    
+    fetch(`/purchase/${slug}/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || '',
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            button.classList.remove('game-card__button--buy');
+            button.classList.add('game-card__button--owned');
+            button.innerHTML = '<i class="fas fa-check"></i> Posiadasz';
+            button.disabled = true;
+            alert(data.message);
+            setTimeout(() => {
+                window.location.href = data.redirect;
+            }, 1000);
+        } else {
+            button.innerHTML = originalText;
+            button.disabled = false;
+            alert(data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        button.innerHTML = originalText;
+        button.disabled = false;
+        alert('Błąd podczas kupowania gry');
+    });
+}
+</script>
+{% endblock %}

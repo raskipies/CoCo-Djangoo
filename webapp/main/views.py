@@ -1,17 +1,94 @@
 # Plik do definiowania widoków, które są renderowane za pomocą szablonizatora Jinja oraz wyświetlane w przeglądarce
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages #to show message back for errors
 from django.contrib.auth.decorators import login_required
-from .models import Game
+from .models import Game, Purchase
 
 # miejsce na widoki
 def index(request):
     featured_games = Game.objects.filter(is_active=True, is_featured=True).order_by('-created_at')
     return render(request, 'main/index.html', {'games': featured_games})
+
+
+def store_view(request):
+    store_games = Game.objects.filter(is_active=True, is_featured=True).order_by('-created_at')
+    
+    user_purchases = set()
+    if request.user.is_authenticated:
+        user_purchases = set(
+            Purchase.objects.filter(user=request.user).values_list('game_id', flat=True)
+        )
+    
+    games_with_status = [
+        {
+            'game': game,
+            'is_owned': game.id in user_purchases,
+        }
+        for game in store_games
+    ]
+    
+    return render(request, 'main/store.html', {
+        'games': games_with_status,
+    })
+
+
+@login_required
+def library_view(request):
+    # Pobierz gry które użytkownik kupił
+    user_purchases = Purchase.objects.filter(user=request.user).values_list('game_id', flat=True)
+    library_games = list(Game.objects.filter(
+        is_active=True,
+        id__in=user_purchases,
+    ).order_by('title'))
+
+    selected_game = None
+    selected_slug = request.GET.get('game')
+
+    if library_games:
+        selected_game = next(
+            (game for game in library_games if game.slug == selected_slug),
+            library_games[0],
+        )
+
+    return render(
+        request,
+        'main/library.html',
+        {
+            'games': library_games,
+            'selected_game': selected_game,
+        },
+    )
+
+
+@login_required
+def purchase_game(request, game_slug):
+    try:
+        game = Game.objects.get(slug=game_slug, is_active=True)
+    except Game.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'Gra nie znaleziona'})
+    
+    # Sprawdź czy użytkownik już posiada grę
+    purchase, created = Purchase.objects.get_or_create(
+        user=request.user,
+        game=game,
+    )
+    
+    if created:
+        return JsonResponse({
+            'success': True,
+            'message': f'Kupiłeś grę: {game.title}!',
+            'redirect': '/library/'
+        })
+    else:
+        return JsonResponse({
+            'success': False,
+            'message': 'Już posiadasz tę grę!'
+        })
+
 
 @login_required
 def cars(request):

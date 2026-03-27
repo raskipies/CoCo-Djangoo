@@ -25,4 +25,4 @@ urlpatterns = [
     path('', include('main.urls')),
     path('news/', include('news.urls')), 
     path('forum/', include('forum.urls')) #delegating authority to an internal application to forum.urls that is needed to be created
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

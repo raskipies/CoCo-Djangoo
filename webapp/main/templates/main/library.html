@@ -1,0 +1,64 @@
+{% extends 'main/layout/layout.html' %}
+{% load static %}
+
+{% block title %}Library{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="{% static 'main/css/library.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="library-page">
+    <header class="library-header">
+        <h1>YOUR GAME LIBRARY</h1>
+        <p>Build your collection and jump into your favorite worlds.</p>
+    </header>
+
+    {% if games %}
+    <div class="library-grid">
+        {% for game in games %}
+        <a class="library-card {% if selected_game and selected_game.slug == game.slug %}is-active{% endif %}" href="{% url 'library' %}?game={{ game.slug }}">
+            <div class="library-card__media">
+                {% if game.image %}
+                <img src="{{ game.image }}" alt="{{ game.title }}">
+                {% else %}
+                <div class="library-card__placeholder">
+                    <span>{{ game.title|truncatechars:2 }}</span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="library-card__body">
+                <h2>{{ game.title }}</h2>
+                <p>{{ game.short_description|truncatechars:55 }}</p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+
+    {% if selected_game %}
+    <article class="library-details">
+        <div class="library-details__media">
+            {% if selected_game.image %}
+            <img src="{{ selected_game.image }}" alt="{{ selected_game.title }}">
+            {% else %}
+            <div class="library-details__placeholder">
+                <span>{{ selected_game.title|truncatechars:2 }}</span>
+            </div>
+            {% endif %}
+            <h2>{{ selected_game.title }}</h2>
+        </div>
+
+        <div class="library-details__content">
+            <h3>GAME DESCRIPTION</h3>
+            <p>{{ selected_game.short_description }}</p>
+            <div class="library-details__price">PLAY {{ selected_game.title }} - {{ selected_game.price }} PLN</div>
+        </div>
+    </article>
+    {% endif %}
+    {% else %}
+    <div class="library-empty-state">
+        No games are assigned to your library yet.
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
