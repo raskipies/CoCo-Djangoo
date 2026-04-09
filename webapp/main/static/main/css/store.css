@@ -70,7 +70,8 @@
 .game-card__media {
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  padding-top: 56.25%;
+  /* 16:9 Aspect Ratio */
   background: var(--background);
   overflow: hidden;
 }
@@ -219,6 +220,7 @@
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -231,7 +233,7 @@
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1.2rem;
   }
-  
+
   .store-header h1 {
     font-size: 2rem;
   }
@@ -241,42 +243,42 @@
   .store-page {
     padding: 1.5rem 1rem;
   }
-  
+
   .store-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
   }
-  
+
   .store-header h1 {
     font-size: 1.8rem;
     letter-spacing: 1px;
   }
-  
+
   .store-header p {
     font-size: 1rem;
   }
-  
+
   .game-card__body {
     padding: 1rem;
   }
-  
+
   .game-card__title {
     font-size: 1rem;
   }
-  
+
   .game-card__description {
     font-size: 0.85rem;
   }
-  
+
   .game-card__footer {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .game-card__price {
     font-size: 1.1rem;
   }
-  
+
   .game-card__button {
     width: 100%;
     padding: 0.6rem 0.8rem;
@@ -288,25 +290,25 @@
   .store-page {
     padding: 1rem 0.75rem;
   }
-  
+
   .store-grid {
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
     gap: 0.75rem;
   }
-  
+
   .store-header h1 {
     font-size: 1.5rem;
     margin-bottom: 0.25rem;
   }
-  
+
   .game-card__title {
     font-size: 0.9rem;
   }
-  
+
   .game-card__description {
     display: none;
   }
-  
+
   .game-card__price {
     font-size: 1rem;
   }

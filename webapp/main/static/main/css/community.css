@@ -1,0 +1,246 @@
+:root {
+  --primary-green: #58aa68;
+  --secondary-green: #7ec488;
+  --light-green: #95c89f;
+  --background-light: #f3f5ef;
+  --background-gradient: linear-gradient(135deg, #f3f5ef 0%, #e8ebe4 100%);
+  --sidebar-dark: #1a1f1e;
+  --card-bg: #ffffff;
+  --text-primary: #1a1f1e;
+  --text-secondary: #5a5f5e;
+  --border-color: #e0e3de;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background-color: var(--background-light);
+}
+
+.main_container {
+  display: flex !important;
+  align-items: stretch;
+  min-height: 100vh;
+  width: 100%;
+  background-color: transparent;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--background-gradient) !important;
+  min-height: 100vh;
+  background-attachment: fixed;
+}
+
+.community-page {
+  padding: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+aside,
+.sidebar {
+  min-height: 100vh;
+  height: auto;
+  background-color: var(--sidebar-dark) !important;
+  position: relative;
+  align-self: stretch;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.scroll-to-top-btn {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: var(--primary-green);
+  color: white;
+  font-size: 1.1rem;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.scroll-to-top-btn:hover {
+  background: var(--secondary-green);
+}
+
+.create-post-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow);
+}
+
+.create-post-card textarea {
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  resize: none;
+  padding: 1rem;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.post-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.post-card__header {
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--light-green);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.post-card__body {
+  padding: 1.5rem;
+}
+
+.post-card__image-container {
+  width: 100%;
+  background: #eee;
+}
+
+.post-card__image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.post-card__comments {
+  padding: 1rem 1.5rem;
+  background: #f7f8f9;
+  border-top: 1px solid var(--border-color);
+}
+
+.comment-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e5e8eb;
+}
+
+.comment-item:last-child {
+  border-bottom: none;
+}
+
+.comment-item__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.comment-item__body p {
+  margin: 0;
+}
+
+.comment-form textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+
+.post-card__footer {
+  padding: 1rem 1.5rem;
+  background: #fafafa;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  gap: 1.5rem;
+}
+
+.btn-community {
+  background: var(--primary-green);
+  color: white;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-community:hover {
+  background: var(--secondary-green);
+}
+
+.post-action {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+/*Nagłówek*/
+.store-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  animation: slideDown 0.6s ease-out;
+}
+
+.store-header h1 {
+  font-size: 2.5rem;
+  color: var(--text-primary);
+  margin: 0 0 0.5rem 0;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.store-header p {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .store-header h1 {
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+  }
+
+  .store-header p {
+    font-size: 1rem;
+  }
+}
