@@ -1,10 +1,127 @@
 {% extends 'main/layout/layout.html' %}
+{% load static %}
 
-{% block title%}Forum{% endblock %}
+{% block title %}Community{% endblock %}
 
-{% block content%}
-    <h1>Forum</h1>
-    <div class="d-flex flex-column gap-4">
+{% block styles %}
+<link rel="stylesheet" href="{% static 'main/css/community.css' %}">
+{% endblock %}
 
-    </div>
+{% block content %}
+<section class="community-page">
+  <header class="store-header">
+    <h1>COMMUNITY</h1>
+    <p>Share your moments and connect with other gamers.</p>
+  </header>
+
+  <div class="create-post-card">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create_post">
+      <div class="mb-3">
+        <label for="postContent" class="form-label fw-bold">What's happening in your gaming world?</label>
+        {% if user.is_authenticated %}
+        <textarea name="content" class="form-control" id="postContent" rows="3"
+          placeholder="Share your latest quest..."></textarea>
+        <input type="file" name="image" accept="image/*" class="form-control form-control-sm mt-2">
+        {% else %}
+        <textarea class="form-control" id="postContent" rows="3" placeholder="Log in to post" disabled></textarea>
+        <input type="file" class="form-control form-control-sm mt-2" disabled>
+        {% endif %}
+      </div>
+      <div class="d-flex justify-content-end align-items-center">
+        {% if user.is_authenticated %}
+        <button type="submit" class="btn-community">Post Update</button>
+        {% else %}
+        <a href="/login?next={{ request.path }}" class="btn-community">Log in to post</a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <div class="post-list">
+    {% if posts %}
+    {% for post in posts %}
+    <article class="post-card">
+      <div class="post-card__header">
+        <div class="user-avatar"><i class="fas fa-user"></i></div>
+        <div class="post-card__user-info">
+          <h4>{{ post.author.username }}</h4>
+          <small class="text-muted">{{ post.created_at|timesince }} ago</small>
+        </div>
+      </div>
+      <div class="post-card__body">
+        <p>{{ post.content }}</p>
+      </div>
+      {% if post.image %}
+      <div class="post-card__image-container">
+        <img src="{{ post.image.url }}" class="post-card__image" alt="Post image">
+      </div>
+      {% endif %}
+      <div class="post-card__comments px-3 pb-3">
+        {% if post.comments.all %}
+        {% for comment in post.comments.all %}
+        <div class="comment-item mb-3">
+          <div class="comment-item__meta d-flex justify-content-between align-items-center mb-1">
+            <strong>{{ comment.author.username }}</strong>
+            <div class="d-flex gap-2 align-items-center">
+              <small class="text-muted">{{ comment.created_at|timesince }} ago</small>
+              {% if user.is_authenticated and user == comment.author %}
+              <form method="POST" action="{% url 'forum_delete_comment' comment.id %}" class="m-0 p-0">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-link text-danger p-0">Delete</button>
+              </form>
+              {% endif %}
+            </div>
+          </div>
+          <div class="comment-item__body">
+            <p class="mb-0">{{ comment.content }}</p>
+          </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="text-muted">No comments yet.</div>
+        {% endif %}
+      </div>
+      {% if user.is_authenticated %}
+      <form method="POST" class="comment-form px-3 pb-3">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="add_comment">
+        <input type="hidden" name="post_id" value="{{ post.id }}">
+        <textarea name="comment_content" class="form-control mb-2" rows="2" placeholder="Leave a reply..."></textarea>
+        <button type="submit" class="btn btn-sm btn-outline-primary">Add comment</button>
+      </form>
+      {% endif %}
+      <div class="post-card__footer d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center gap-3">
+          <form method="POST" class="m-0 p-0">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="toggle_like">
+            <input type="hidden" name="post_id" value="{{ post.id }}">
+            <button type="submit" class="btn btn-link p-0 post-action">
+              <i
+                class="{% if request.user.is_authenticated and post.id in liked_post_ids %}fas fa-heart text-danger{% else %}far fa-heart{% endif %}"></i>
+              {{ post.likes_count }}
+            </button>
+          </form>
+          <span class="text-muted">{{ post.comments_count }} comments</span>
+        </div>
+        {% if user.is_authenticated and user == post.author %}
+        <form method="POST" action="{% url 'forum_delete_post' post.id %}" class="m-0 p-0">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+        </form>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+    {% else %}
+    <div class="alert alert-light text-center">No posts yet. Be the first to share something!</div>
+    {% endif %}
+  </div>
+  {% if posts|length > 2 %}
+  <button type="button" class="scroll-to-top-btn" onclick="window.scrollTo({top: 0, behavior: 'smooth'});"
+    aria-label="Scroll to top">↑</button>
+  {% endif %}
+</section>
 {% endblock %}
