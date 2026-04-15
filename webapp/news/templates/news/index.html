@@ -1,25 +1,170 @@
 {% extends 'main/layout/layout.html' %}
+{% load static %}
 
-{% block title%}Webpage news{% endblock %}
+{% block title %}Bug Forum{% endblock %}
 
-{% block content%}
-<h1>Bug Forum</h1>
-<div class="d-flex flex-column gap-4">
-    {% if news %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'main/css/community.css' %}">
+<style>
+    /* Stylowanie dla listy wyboru gier */
+    .game-select {
+        background-color: #2a2a2a;
+        color: white;
+        border: 1px solid #444;
+        border-radius: 5px;
+        padding: 8px;
+        margin-bottom: 10px;
+        width: 100%;
+    }
 
-    {% for article in news %}
+    .game-select:focus {
+        border-color: #28a745;
+        outline: none;
+    }
 
-    <div>
-        <h3><a href="/news/{{ article.id }}">{{ article.title }}</a></h3>
-        <p>{{ article.excerpt }}</p>
+    /* Dodatkowe oddzielenie sekcji komentarzy */
+    .post-card__comments {
+        background-color: rgba(0, 0, 0, 0.02);
+        border-top: 1px solid #eee;
+    }
+
+    .comment-item {
+        border-bottom: 1px dashed #ddd;
+        padding-bottom: 8px;
+    }
+
+    .comment-item:last-child {
+        border-bottom: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="community-page">
+    <header class="store-header">
+        <h1>BUG FORUM</h1>
+        <p>Report issues and help us improve your favorite titles.</p>
+    </header>
+
+    <div class="create-post-card">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="report_bug">
+
+            <div class="mb-3">
+                <label for="bugContent" class="form-label fw-bold">Describe the bug</label>
+
+                {% if user.is_authenticated %}
+                <label for="gameSelect" class="form-label small text-muted">Select the game you're reporting
+                    for:</label>
+                <select name="game_id" id="gameSelect" class="game-select" required>
+                    <option value="" disabled selected>-- Choose a game you own --</option>
+                    {% for purchase in user_purchases %}
+                    <option value="{{ purchase.game.id }}">{{ purchase.game.title }}</option>
+                    {% empty %}
+                    <option value="" disabled>You don't own any games yet.</option>
+                    {% endfor %}
+                </select>
+
+                <textarea name="content" class="form-control" id="bugContent" rows="3"
+                    placeholder="What went wrong? Describe the steps to reproduce..."></textarea>
+
+                <input type="file" name="image" accept="image/*" class="form-control form-control-sm mt-2">
+                {% else %}
+                <textarea class="form-control" id="bugContent" rows="3" placeholder="Log in to report a bug"
+                    disabled></textarea>
+                {% endif %}
+            </div>
+
+            <div class="d-flex justify-content-end align-items-center">
+                {% if user.is_authenticated %}
+                {% if user_purchases %}
+                <button type="submit" class="btn-community">Submit Bug Report</button>
+                {% else %}
+                <button type="button" class="btn-community" disabled>Buy a game to report bugs</button>
+                {% endif %}
+                {% else %}
+                <a href="/login?next={{ request.path }}" class="btn-community">Log in to report</a>
+                {% endif %}
+            </div>
+        </form>
     </div>
 
-    {% endfor %}
+    <div class="post-list">
+        {% if news %}
+        {% for bug in news %}
+        <article class="post-card mb-4">
+            <div class="post-card__header">
+                <div class="user-avatar"><i class="fas fa-user"></i></div>
+                <div class="post-card__user-info">
+                    <h4>{{ bug.author.username }} <small class="text-success">@ {{ bug.game.title }}</small></h4>
+                    <small class="text-muted">{{ bug.created_at|timesince }} ago</small>
+                </div>
+            </div>
 
-    {% else %}
+            <div class="post-card__body">
+                <p>{{ bug.content }}</p>
+            </div>
 
-    <p>No Bugs for now. Come back later!</p>
+            {% if bug.image %}
+            <div class="post-card__image-container">
+                <img src="{{ bug.image.url }}" class="post-card__image" alt="Bug screenshot">
+            </div>
+            {% endif %}
 
-    {% endif %}
-</div>
+            <div class="post-card__comments px-3 pb-3 pt-3">
+                <h6 class="small fw-bold mb-3">Discussion:</h6>
+                {% if bug.comments.all %}
+                {% for comment in bug.comments.all %}
+                <div class="comment-item mb-3">
+                    <div class="comment-item__meta d-flex justify-content-between align-items-center mb-1">
+                        <strong>{{ comment.author.username }}</strong>
+                        <div class="d-flex gap-2 align-items-center">
+                            <small class="text-muted">{{ comment.created_at|timesince }} ago</small>
+                            {% if user.is_authenticated and user == comment.author %}
+                            <form method="POST" action="{% url 'delete_bug_comment' comment.id %}" class="m-0 p-0">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-link text-danger p-0">Delete</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="comment-item__body">
+                        <p class="mb-0 small">{{ comment.content }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="text-muted small">No comments yet. Be the first to help!</div>
+                {% endif %}
+            </div>
+
+            {% if user.is_authenticated %}
+            <form method="POST" class="comment-form px-3 pb-3">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="add_comment">
+                <input type="hidden" name="bug_id" value="{{ bug.id }}">
+                <textarea name="comment_content" class="form-control mb-2 form-control-sm" rows="2"
+                    placeholder="Write a reply..."></textarea>
+                <button type="submit" class="btn btn-sm btn-outline-primary">Reply</button>
+            </form>
+            {% endif %}
+
+            <div class="post-card__footer d-flex justify-content-between align-items-center">
+                <span class="text-muted small"><i class="far fa-comment"></i> {{ bug.comments.count }} comments</span>
+
+                {% if user.is_authenticated and user == bug.author %}
+                <form method="POST" action="{% url 'delete_bug' bug.id %}" class="m-0 p-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete Post</button>
+                </form>
+                {% endif %}
+            </div>
+        </article>
+        {% endfor %}
+        {% else %}
+        <div class="alert alert-light text-center border">No bugs reported yet. Everything seems to be working!</div>
+        {% endif %}
+    </div>
+</section>
 {% endblock %}
