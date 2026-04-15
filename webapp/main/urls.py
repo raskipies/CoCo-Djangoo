@@ -5,7 +5,7 @@ from . import views
 from news import views as news_views
 
 urlpatterns = [
-    path('', views.index, name='home'),
+   path('', views.store_view, name='home'), #15.04 Pali - od razu wyświetlanie się strony głównej jako sklep
     path('store/', views.store_view, name='store'),
     path('library/', views.library_view, name='library'),
     path('purchase/<slug:game_slug>/', views.purchase_game, name='purchase_game'),

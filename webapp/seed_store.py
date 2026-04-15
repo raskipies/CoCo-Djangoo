@@ -18,6 +18,7 @@ featured_games = [
         'slug': 'cyberpunk-2077',
         'short_description': 'Immerse yourself in a dystopian metropolis driven by oppressive megacorporations.',
         'price': '199.99',
+        'image': 'games/cybb.jpg',
         'is_featured': True,
     },
     {
@@ -25,6 +26,7 @@ featured_games = [
         'slug': 'the-witcher-3',
         'short_description': 'Play as Geralt of Rivia, a legendary monster hunter, in an open world filled with danger.',
         'price': '79.99',
+        'image': 'games/w3.png',
         'is_featured': True,
     },
     {
@@ -32,6 +34,7 @@ featured_games = [
         'slug': 'hades',
         'short_description': 'Defy the god of the Dead in this roguelike dungeon crawler with stunning art style.',
         'price': '24.99',
+        'image': 'games/hades.png',
         'is_featured': True,
     },
     {
@@ -39,6 +42,7 @@ featured_games = [
         'slug': 'stardew-valley',
         'short_description': 'Escape to the countryside and rebuild your life in this relaxing farming simulator.',
         'price': '14.99',
+        'image': 'games/sv.png',
         'is_featured': True,
     },
     {
@@ -46,6 +50,7 @@ featured_games = [
         'slug': 'hollow-knight',
         'short_description': 'Explore a beautiful, mysterious kingdom as a tiny knight filled with ancient darkness.',
         'price': '14.99',
+        'image': 'games/hk.png',
         'is_featured': True,
     },
 ]
@@ -56,12 +61,13 @@ print("=" * 60)
 
 created_count = 0
 for game_data in featured_games:
-    game, created = Game.objects.get_or_create(
+    game, created = Game.objects.update_or_create(
         slug=game_data['slug'],
         defaults={
             'title': game_data['title'],
             'short_description': game_data['short_description'],
             'price': game_data['price'],
+            'image': game_data.get('image', ''),
             'is_featured': game_data['is_featured'],
             'is_active': True,
         }
@@ -71,7 +77,8 @@ for game_data in featured_games:
         print(f"✓ Created: {game.title}")
         created_count += 1
     else:
-        print(f"• Exists: {game.title}")
+        print(f"✓ Updated: {game.title}")
+        created_count += 1
 
 print(f"\n{created_count} new games added to store!")
 
