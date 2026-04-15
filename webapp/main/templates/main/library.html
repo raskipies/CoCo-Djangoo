@@ -17,10 +17,11 @@
     {% if games %}
     <div class="library-grid">
         {% for game in games %}
-        <a class="library-card {% if selected_game and selected_game.slug == game.slug %}is-active{% endif %}" href="{% url 'library' %}?game={{ game.slug }}">
+        <a class="library-card {% if selected_game and selected_game.slug == game.slug %}is-active{% endif %}"
+            href="{% url 'library' %}?game={{ game.slug }}">
             <div class="library-card__media">
                 {% if game.image %}
-                <img src="{{ game.image }}" alt="{{ game.title }}">
+                <img src="{{ game.image.url }}" alt="{{ game.title }}">
                 {% else %}
                 <div class="library-card__placeholder">
                     <span>{{ game.title|truncatechars:2 }}</span>
@@ -39,7 +40,7 @@
     <article class="library-details">
         <div class="library-details__media">
             {% if selected_game.image %}
-            <img src="{{ selected_game.image }}" alt="{{ selected_game.title }}">
+            <img src="{{ selected_game.image.url }}" alt="{{ selected_game.title }}">
             {% else %}
             <div class="library-details__placeholder">
                 <span>{{ selected_game.title|truncatechars:2 }}</span>
