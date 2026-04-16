@@ -5,19 +5,8 @@ from django.http import HttpResponseForbidden
 from main.models import Game, Purchase 
 from .models import Articles, Bug, BugComment
 from .forms import ArticlesForm
-from .forms import RequestGameForm #REQUEST GAME!!
 
 # Create your views here.
-
-def request_game(request):
-    if request.method == 'POST':
-        form = RequestGameForm()
-        if form.is_valid():
-            form.save()
-    else:
-        form = RequestGameForm()
-
-    return render(request, 'news/request_game.html', {'form': form}) # REQUEST GAME!!
 
 def news_home(request):
     bugs = Bug.objects.all().order_by('-created_at').prefetch_related('comments__author')

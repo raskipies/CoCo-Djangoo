@@ -16,6 +16,4 @@ urlpatterns = [
     path('login', views.login_user, name='login_user'),
     path('register', views.register, name='register_user'),
     path('logout', views.logout_user, name='logout_user'),
-
-    path('request-game/', news_views.request_game, name='request_game'), #18.03 Pali - nowe ścieżki
 ]
