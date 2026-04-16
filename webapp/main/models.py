@@ -35,3 +35,18 @@ class Purchase(models.Model):
 
 	def __str__(self):
 		return f"{self.user.username} - {self.game.title}"
+
+
+class GameRequest(models.Model):
+	user = models.ForeignKey(User, on_delete=models.CASCADE)
+	game_title = models.CharField(max_length=200)
+	game_developer = models.CharField(max_length=200, blank=True, null=True)
+	game_link = models.URLField(blank=True, null=True)
+	game_reason = models.TextField()
+	submitted_at = models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		ordering = ['-submitted_at']
+
+	def __str__(self):
+		return f"{self.user.username} - {self.game_title}"

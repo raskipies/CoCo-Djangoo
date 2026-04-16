@@ -11,6 +11,8 @@ urlpatterns = [
     path('purchase/<slug:game_slug>/', views.purchase_game, name='purchase_game'),
     path('features/', views.features_page, name='features'), #18.03 Pali- nowe
     path('about', views.about, name='about'),
+    path('admin-panel/', views.admin_panel, name='admin_panel'),
+    path('admin-panel/delete/<int:request_id>/', views.delete_game_request, name='delete_game_request'),
     path('cars', views.cars, name='cars'),
     path('request-game/', views.request_game, name='request_game'),
 
