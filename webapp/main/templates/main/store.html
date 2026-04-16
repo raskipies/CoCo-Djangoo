@@ -33,13 +33,14 @@
                 <div class="game-card__footer">
                     <div class="game-card__price">{{ item.game.price }} PLN</div>
                     {% if item.is_owned %}
-                        <button class="game-card__button game-card__button--owned" disabled>
-                            <i class="fas fa-check"></i> Posiadasz
-                        </button>
+                    <button class="game-card__button game-card__button--owned" disabled>
+                        <i class="fas fa-check"></i> Owned
+                    </button>
                     {% else %}
-                        <button class="game-card__button game-card__button--buy" onclick="purchaseGame('{{ item.game.slug }}', this)">
-                            <i class="fas fa-shopping-cart"></i> Kup
-                        </button>
+                    <button class="game-card__button game-card__button--buy"
+                        onclick="purchaseGame('{{ item.game.slug }}', this)">
+                        <i class="fas fa-shopping-cart"></i> Buy
+                    </button>
                     {% endif %}
                 </div>
             </div>
@@ -49,48 +50,48 @@
     {% else %}
     <div class="empty-state">
         <i class="fas fa-inbox"></i>
-        <h2>Brak dostępnych gier</h2>
-        <p>Powróć później, aby zobaczyć nowe gry!</p>
+        <h2>No games available</h2>
+        <p>Come back later to see new games!</p>
     </div>
     {% endif %}
 </section>
 
 <script>
-function purchaseGame(slug, button) {
-    button.disabled = true;
-    const originalText = button.innerHTML;
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kupowanie...';
-    
-    fetch(`/purchase/${slug}/`, {
-        method: 'POST',
-        headers: {
-            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || '',
-            'Content-Type': 'application/json',
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            button.classList.remove('game-card__button--buy');
-            button.classList.add('game-card__button--owned');
-            button.innerHTML = '<i class="fas fa-check"></i> Posiadasz';
-            button.disabled = true;
-            alert(data.message);
-            setTimeout(() => {
-                window.location.href = data.redirect;
-            }, 1000);
-        } else {
-            button.innerHTML = originalText;
-            button.disabled = false;
-            alert(data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        button.innerHTML = originalText;
-        button.disabled = false;
-        alert('Błąd podczas kupowania gry');
-    });
-}
+    function purchaseGame(slug, button) {
+        button.disabled = true;
+        const originalText = button.innerHTML;
+        button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Purchasing...';
+
+        fetch(`/purchase/${slug}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || '',
+                'Content-Type': 'application/json',
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    button.classList.remove('game-card__button--buy');
+                    button.classList.add('game-card__button--owned');
+                    button.innerHTML = '<i class="fas fa-check"></i> Owned';
+                    button.disabled = true;
+                    alert(data.message);
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1000);
+                } else {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                button.innerHTML = originalText;
+                button.disabled = false;
+                alert('Error during purchase. Please try again later.');
+            });
+    }
 </script>
 {% endblock %}

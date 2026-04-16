@@ -5,8 +5,8 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages #to show message back for errors
-from django.contrib.auth.decorators import login_required
-from .models import Game, Purchase
+from django.contrib.auth.decorators import login_required, user_passes_test
+from .models import Game, Purchase, GameRequest
 
 # miejsce na widoki
 def index(request):
@@ -80,13 +80,13 @@ def purchase_game(request, game_slug):
     if created:
         return JsonResponse({
             'success': True,
-            'message': f'Kupiłeś grę: {game.title}!',
+            'message': f'You purchased: {game.title}!',
             'redirect': '/library/'
         })
     else:
         return JsonResponse({
             'success': False,
-            'message': 'Już posiadasz tę grę!'
+            'message': 'You already own this game!'
         })
 
 
@@ -173,5 +173,65 @@ def features_page(request):
     return render(request, 'main/features.html') #features.html
 
 
+@login_required
 def request_game(request):
-    return render(request, 'main/reqgame.html')
+	# Check if there's a submitted request to display
+	submitted_request_id = request.session.pop('submitted_request_id', None)
+	game_request = None
+	
+	if submitted_request_id:
+		try:
+			game_request = GameRequest.objects.get(id=submitted_request_id, user=request.user)
+		except GameRequest.DoesNotExist:
+			game_request = None
+	
+	if request.method == 'POST':
+		# Get form data
+		game_title = request.POST.get('game_title', '').strip()
+		game_developer = request.POST.get('game_developer', '').strip()
+		game_link = request.POST.get('game_link', '').strip()
+		game_reason = request.POST.get('game_reason', '').strip()
+		
+		# Validate required fields
+		if not game_title or not game_reason:
+			messages.error(request, 'Game title and reason are required!')
+			return render(request, 'main/reqgame.html')
+		
+		# Create GameRequest
+		new_game_request = GameRequest.objects.create(
+			user=request.user,
+			game_title=game_title,
+			game_developer=game_developer if game_developer else None,
+			game_link=game_link if game_link else None,
+			game_reason=game_reason
+		)
+		
+		# Store the request ID in session and redirect (POST-REDIRECT-GET pattern)
+		request.session['submitted_request_id'] = new_game_request.id
+		return redirect('request_game')
+	
+	# GET request
+	return render(request, 'main/reqgame.html', {
+		'submitted': game_request is not None,
+		'game_request': game_request
+	})
+
+
+@user_passes_test(lambda u: u.is_staff)
+def admin_panel(request):
+	game_requests = GameRequest.objects.all().order_by('-submitted_at')
+	return render(request, 'main/admin_panel.html', {
+		'game_requests': game_requests
+	})
+
+
+@user_passes_test(lambda u: u.is_staff)
+def delete_game_request(request, request_id):
+	try:
+		game_request = GameRequest.objects.get(id=request_id)
+		game_request.delete()
+		messages.success(request, f'Request #{request_id} has been deleted.')
+	except GameRequest.DoesNotExist:
+		messages.error(request, 'Request not found.')
+	
+	return redirect('admin_panel')

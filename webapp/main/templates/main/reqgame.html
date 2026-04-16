@@ -5,6 +5,107 @@
 
 {% block styles %}
 <link rel="stylesheet" href="{% static 'main/css/reqgame.css' %}">
+<style>
+  .submission-confirmation {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: var(--shadow);
+    animation: slideDown 0.6s ease-out;
+  }
+
+  .submission-confirmation h2 {
+    color: var(--primary-green);
+    margin: 0 0 2rem 0;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+
+  .submission-info {
+    background: var(--background);
+    border-left: 4px solid var(--primary-green);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+  }
+
+  .info-row {
+    margin: 0.75rem 0;
+    font-size: 1rem;
+    color: var(--text-primary);
+  }
+
+  .info-row strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .request-details {
+    background: var(--background);
+    padding: 1.5rem;
+    border-radius: 4px;
+    margin-bottom: 2rem;
+  }
+
+  .request-details h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 0.75rem;
+    font-size: 1.1rem;
+  }
+
+  .detail-item {
+    margin-bottom: 1.5rem;
+  }
+
+  .detail-item strong {
+    display: block;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .detail-item p {
+    margin: 0;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    padding-left: 1rem;
+  }
+
+  .detail-item a {
+    color: var(--primary-green);
+    text-decoration: none;
+  }
+
+  .detail-item a:hover {
+    text-decoration: underline;
+  }
+
+  .confirmation-actions {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .confirmation-actions .reqgame-button {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    color: white;
+    padding: 0.9rem 1.5rem;
+    border: 2px solid var(--primary-green);
+    margin-top: 0;
+  }
+
+  .form-group input:read-only,
+  .form-group input[readonly] {
+    background: var(--background);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -15,8 +116,70 @@
   </header>
 
   <div class="reqgame-container">
+    {% if submitted %}
+    <!-- Confirmation View -->
+    <div class="submission-confirmation">
+      <h2>✓ Request Submitted Successfully!</h2>
+
+      <div class="submission-info">
+        <div class="info-row">
+          <strong>Request Number:</strong> #{{ game_request.id }}
+        </div>
+        <div class="info-row">
+          <strong>Submission Date:</strong> {{ game_request.submitted_at|date:"d M Y, H:i" }}
+        </div>
+        <div class="info-row">
+          <strong>Username:</strong> {{ game_request.user.username }}
+        </div>
+      </div>
+
+      <div class="request-details">
+        <h3>Request Details</h3>
+
+        <div class="detail-item">
+          <strong>Game Title</strong>
+          <p>{{ game_request.game_title }}</p>
+        </div>
+
+        <div class="detail-item">
+          <strong>Studio / Publisher</strong>
+          {% if game_request.game_developer %}
+          <p>{{ game_request.game_developer }}</p>
+          {% else %}
+          <p></p>
+          {% endif %}
+        </div>
+
+        <div class="detail-item">
+          <strong>Link (e.g., Steam, GOG, IGDB)</strong>
+          {% if game_request.game_link %}
+          <p><a href="{{ game_request.game_link }}" target="_blank">{{ game_request.game_link }}</a></p>
+          {% else %}
+          <p></p>
+          {% endif %}
+        </div>
+
+        <div class="detail-item">
+          <strong>Why should it be added?</strong>
+          <p>{{ game_request.game_reason }}</p>
+        </div>
+      </div>
+
+      <div class="confirmation-actions">
+        <button type="button" class="reqgame-button" onclick="location.reload()">
+          <i class="fas fa-plus"></i> Send New Form
+        </button>
+      </div>
+    </div>
+    {% else %}
+    <!-- Form View -->
     <form method="POST" class="reqgame-form">
       {% csrf_token %}
+
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" value="{{ user.username }}" readonly>
+      </div>
 
       <div class="form-group">
         <label for="game_title">Game Title *</label>
@@ -42,6 +205,7 @@
         <i class="fas fa-paper-plane"></i> Submit Request
       </button>
     </form>
+    {% endif %}
   </div>
 </section>
 {% endblock %}

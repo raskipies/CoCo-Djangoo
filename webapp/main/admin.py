@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Game, Purchase
+from .models import Game, Purchase, GameRequest
 
 # modele
 
@@ -27,4 +27,20 @@ class PurchaseAdmin(admin.ModelAdmin):
 	list_filter = ('purchased_at', 'user')
 	search_fields = ('user__username', 'game__title')
 	readonly_fields = ('purchased_at',)
+
+
+@admin.register(GameRequest)
+class GameRequestAdmin(admin.ModelAdmin):
+	list_display = ('id', 'user', 'game_title', 'submitted_at')
+	list_filter = ('submitted_at', 'user')
+	search_fields = ('user__username', 'game_title', 'game_developer')
+	readonly_fields = ('submitted_at', 'user')
+	fieldsets = (
+		('Request Info', {
+			'fields': ('id', 'user', 'submitted_at')
+		}),
+		('Game Details', {
+			'fields': ('game_title', 'game_developer', 'game_link', 'game_reason')
+		}),
+	)
 

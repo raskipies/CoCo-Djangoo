@@ -2,9 +2,10 @@ from django import template
 
 register = template.Library();
 
-@register.simple_tag
-def get_links():
-    return [
+@register.simple_tag(takes_context=True)
+def get_links(context):
+    request = context['request']
+    links = [
         {
             'name': 'Store',
             'href': '/store/',
@@ -42,4 +43,15 @@ def get_links():
             'desc': 'About CoCo'
         },
     ]
+    
+    # Add admin panel link if user is authenticated and is staff
+    if request.user.is_authenticated and request.user.is_staff:
+        links.append({
+            'name': 'Admin Panel',
+            'href': '/admin-panel/',
+            'icon': 'fa-sliders',
+            'desc': 'Admin Dashboard'
+        })
+    
+    return links
     
