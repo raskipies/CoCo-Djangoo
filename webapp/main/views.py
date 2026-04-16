@@ -171,3 +171,7 @@ def logout_user(request):
 
 def features_page(request):
     return render(request, 'main/features.html') #features.html
+
+
+def request_game(request):
+    return render(request, 'main/reqgame.html')
