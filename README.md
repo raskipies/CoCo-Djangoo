@@ -1,25 +1,83 @@
-# Django blueprint app
-PyCharm will prepare the virtual environment for project automatically. For non-PyCharm users (for example VSCode) look an instructions below how to do this manually
+# CoCo-Djangoo 🎮
 
-## How to run local server
-Get to the `webapp` directory: `cd webapp` and run `python3 manage.py runserver` from webapp folder
+Kompleksowy system platformy gamingowej zbudowany w oparciu o framework Django. Projekt łączy w sobie funkcjonalności sklepu z grami, biblioteki użytkownika, systemu newsów oraz forum społecznościowego.
 
-*In some enviroments it could be not `python3` but `python`* 
+## 🚀 Główne Funkcjonalności
 
+### 🛒 Sklep z Grami (`main`)
+- Przeglądanie dostępnych gier w responsywnym interfejsie.
+- System zakupów z weryfikacją posiadania gry.
+- Dynamiczne karty gier z cenami i opisami.
+- Możliwość zgłaszania prośby o dodanie nowej gry do bazy.
 
-### How to set up a virtual environment:
+### 📚 Biblioteka Użytkownika (`main`)
+- Zarządzanie zakupionymi grami.
+- Wyświetlanie szczegółów gier przypisanych do konta.
 
-`python3 -m venv .venv` and then select new environment in a VSCode (bottom-right corner)
+### 📰 System Newsów i Bugów (`news`)
+- Publikacja artykułów i aktualności ze świata gier.
+- **System zgłaszania błędów (Bugs):** Użytkownicy mogą zgłaszać problemy w konkretnych grach, dodawać opisy i zrzuty ekranu.
+- Możliwość komentowania zgłoszonych błędów.
 
-### How to switch to a virtual environment in a terminal
+### 💬 Forum Społecznościowe (`forum`)
+- Tworzenie postów tekstowych z załącznikami (zdjęcia/pliki).
+- Interakcje: polubienia (likes) oraz system komentarzy pod postami.
+- Sekcja najczęściej zadawanych pytań (FAQ).
 
-Run `.venv\Scripts\Activate`. Then you will see (.venv) on the left from a CLI prompt
+## 🛠️ Technologia
 
-### How to install all dependencies in an env
+- **Backend:** Python + Django 5.1
+- **Baza danych:** SQLite3
+- **Frontend:** HTML5, CSS3 (Custom styles), JavaScript (Fetch API dla transakcji)
+- **Obsługa mediów:** Pillow (przetwarzanie obrazów gier i postów)
 
-`pip3 install -r requirements.txt`
+## ⚙️ Instalacja i Uruchomienie
 
-### How Quit the server :
-Quit the server with CTRL-C in command line
+### Wymagania
+- Python 3.10+
+- pip (menedżer pakietów)
 
-## Happy coding!!
+### Kroki instalacji
+1. **Sklonuj repozytorium**
+2. **Utwórz i aktywuj środowisko wirtualne:**
+   ```bash
+   python -m venv .venv
+   # Windows:
+   .venv\Scripts\activate
+   # Linux/macOS:
+   source .venv/bin/activate
+   ```
+3. **Zainstaluj zależności:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. **Wykonaj migracje bazy danych:**
+   ```bash
+   cd webapp
+   python manage.py migrate
+   ```
+5. **(Opcjonalnie) Zasil bazę danymi demo:**
+   ```bash
+   python seed_store.py
+   ```
+6. **Uruchom serwer deweloperski:**
+   ```bash
+   python manage.py runserver
+   ```
+
+Aplikacja będzie dostępna pod adresem: `http://127.0.0.1:8000/`
+
+## 👤 Konta Testowe (jeśli użyto seeda)
+- **Admin:** `admin` / `admin`
+- **User:** `testuser` / `testpass123`
+
+## 📁 Struktura Projektu
+- `webapp/` - główny folder projektu Django
+- `main/` - obsługa sklepu i biblioteki
+- `news/` - system artykułów i bugów
+- `forum/` - moduł społecznościowy
+- `media/` - pliki przesłane przez użytkowników (gry, bugi, forum)
+- `static/` - pliki CSS i assety graficzne
+
+---
+*Projekt stworzony w ramach nauki frameworka Django.*
