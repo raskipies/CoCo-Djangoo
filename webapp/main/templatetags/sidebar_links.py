@@ -36,12 +36,6 @@ def get_links(context):
             'icon': 'fa-gamepad',
             'desc': 'Suggest a Game'
         },
-        {
-            'name': 'About',
-            'href': '/about',
-            'icon': 'fa-circle-info',
-            'desc': 'About CoCo'
-        },
     ]
     
     # Add admin panel link if user is authenticated and is staff
