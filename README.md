@@ -49,6 +49,7 @@ Kompleksowy system platformy gamingowej zbudowany w oparciu o framework Django. 
    ```
 3. **Zainstaluj zależności:**
    ```bash
+   cd CoCo-Djangoo
    pip install -r requirements.txt
    ```
 4. **Wykonaj migracje bazy danych:**
@@ -70,6 +71,36 @@ Aplikacja będzie dostępna pod adresem: `http://127.0.0.1:8000/`
 ## 👤 Konta Testowe (jeśli użyto seeda)
 - **Admin:** `admin` / `admin`
 - **User:** `testuser` / `testpass123`
+
+## 👤 Tworzenie konta administratora
+1. **Upewnij się, że jesteś w folderze z plikiem manage.py:**
+   ```bash
+   cd webapp
+   ```
+2. **Uruchom komendę tworzenia użytkownika:**
+   ```bash
+   # Windows:
+   python manage.py createsuperuser
+   # Linux / macOS:
+   python3 manage.py createsuperuser
+   ```
+3. **Postępuj zgodnie z instrukcjami w terminalu:**
+- Username: Wpisz nazwę administratora (np. admin) i naciśnij Enter.
+- Email address: Możesz zostawić puste i nacisnąć Enter.
+- Password: Wpisz hasło. WAŻNE: Podczas wpisywania hasła w terminalu znaki nie będą widoczne!
+- Password (again): Powtórz hasło i naciśnij Enter.
+
+## 🛠️ Jak wejść do Panelu Administratora?
+1. **Uruchom serwer: Upewnij się, że jesteś w folderze webapp w terminalu i masz włączone środowisko wirtualne, a następnie wpisz:**
+   ```bash
+   python manage.py runserver
+   ```
+2. **Otwórz przeglądarkę: Wpisz adres lokalny aplikacji: http://127.0.0.1:8000/**
+
+3. **Przejdź do panelu: Dopisz na końcu adresu /admin, aby uzyskać:**
+- http://127.0.0.1:8000/admin
+
+4. **Zaloguj się: Użyj danych konta superużytkownika (instrukcja tworzenia konta znajduje się powyżej).**
 
 ## 📁 Struktura Projektu
 - `webapp/` - główny folder projektu Django
